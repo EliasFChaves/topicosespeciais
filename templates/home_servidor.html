@@ -2,39 +2,100 @@
 {% block title %}OMEGA - Home{% endblock %}
 
 {% block content %}
+  <style>
+    .page-home {
+      display: flex;
+    }
+    .sidebar {
+      width: 20%;
+    }
+    .page-home-servidor {
+      width: 80%;
+      padding: 20px;
+    }
+    .page-home-titulo {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: black;
+    }
+    .lista-servicos-servidor {
+      display: flex;
+      flex-direction: column;
+    }
+    .tabela-servicos {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .tabela-servicos th, .tabela-servicos td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    .tabela-servicos th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+    .titulo-div-novoServico {
+      font-size: 20px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: black;
+    }
+    .inserir-novoServico span {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .inserir-novoServico input {
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .inserir-novoServico button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .inserir-novoServico button:hover {
+      background-color: #45a049;
+    }
+  </style>
   <div class="page-home">
     <div class="sidebar">{% include 'sidebar.html' %}</div>
     <div class="page-home-servidor">
-        <div class="page-home-titulo">
-          <p style="color: black">Lista de Serviços</p>
-        </div>
-        <div class="lista-serviços-servidor">
-          <!-- Fazer um for aqui -->
-          <div class="card-serviço-servidor">
-            <p class="nome-servico" style="color: black">Teste</p>
-            <button class="button-excluir">Excuir</button>
-          </div>
-          <div class="card-serviço-servidor">
-            <p class="nome-servico" style="color: black">Mais testes</p>
-            <button class="button-excluir">Excuir</button>
-          </div>
-          <div class="card-serviço-servidor">
-            <p class="nome-servico" style="color: black">Outro teste pra vcs</p>
-            <button class="button-excluir">Excuir</button>
-          </div>
+        <div class="page-home-titulo">Lista de Serviços</div>
+        <div class="lista-servicos-servidor">
+          <table class="tabela-servicos">
+            <thead>
+              <tr>
+                <th>Serviços</th>
+                <th>Preços</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for servico in servicos %}
+              <tr>
+                <td>{{ servico.nome }}</td>
+                <td>{{ servico.preco }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
         <div class="div-novoServico">
-          <div class="titulo-div-novoServico">
-            <p style="color: black">Oferecer novo serviço</p>
-          </div>
+          <div class="titulo-div-novoServico">Oferecer novo serviço</div>
           <div class="inserir-novoServico">
-            <span class="span-novoServico"><p style="color: black; font-weight: normal">Nome do serviço</p></span>
-            <input type="text" class="" id="novoServico-input" name="novoServico" placeholder="">
-            <button class="button-inserir">Adicionar</button>
+            <form method="POST" action="/home_servidor">
+              <span>Nome do serviço</span>
+              <input type="text" id="novoServico-input" name="nome_servico" placeholder="" required>
+              <span>Valor do serviço</span>
+              <input type="text" id="valorServico-input" name="valor_servico" placeholder="" required>
+              <button type="submit">Adicionar</button>
+            </form>
           </div>
         </div>
     </div>
   </div>
-
-  <script src=""></script>
 {% endblock %}

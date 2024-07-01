@@ -2,69 +2,106 @@
 {% block title %}OMEGA - Home{% endblock %}
 
 {% block content %}
+  <style>
+    .page-home {
+      display: flex;
+    }
+    .sidebar {
+      width: 20%;
+    }
+    .page-home-cliente {
+      width: 80%;
+      padding: 20px;
+    }
+    .page-home-titulo {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: black;
+    }
+    .barra-pesquisa {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .barra-pesquisa input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-left: 10px;
+      box-sizing: border-box;
+    }
+    .lista-servicos-cliente {
+      display: flex;
+      flex-direction: column;
+    }
+    .tabela-servicos {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .tabela-servicos th, .tabela-servicos td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    .tabela-servicos th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+    .button-contratar {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .button-contratar:hover {
+      background-color: #45a049;
+    }
+  </style>
   <div class="page-home">
     <div class="sidebar">{% include 'sidebar.html' %}</div>
     <div class="page-home-cliente">
         <div class="page-home-titulo">
-            <p style="color: black">Lista de Serviços</p>
+            Lista de Serviços
             <div class="barra-pesquisa">
                 <span class="material-symbols-outlined barra-pesquisa-icone">search</span>
-                <input type="text" class="" placeholder="Procurar serviço"></input>
+                <form method="POST" action="/home_cliente">
+                    <input type="text" name="search_query" value="{{ search_query }}" placeholder="Procurar serviço">
+                </form>
             </div>
         </div>
 
         <div class="lista-servicos-cliente">
-            <div class="lista-dropdown">
-                <!-- Fazer um for aqui -->
-                {% for service in dropdown_services %}
-                    <div class="dropdown">
-                        <button class="dropbtn" onclick="toggleDropdown(this)">
-                            <div class="escrito-drop">
-                                <span class="escrito-drop-button">{{ service }}</span>
-                            </div>
-                            <div  class="icone-drop">
-                                <span class="material-symbols-outlined sidebar-icone">unfold_more</span>
-                            </div>
-                        </button>
-                        <div class="dropdown-content">
-                            {% for option in dropdown_options %}
-                                <!--<a href="#">{{ option }}</a>-->
-                                <div class="dropdown-card-servico">
-                                    <span class="dropdown-card-nome">{{ option }}</span>
-                                    <span class="dropdown-card-celular">teste</span>
-                                    <button class="button-contratar">Contratar</button>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+          <table class="tabela-servicos">
+            <thead>
+              <tr>
+                <th>Serviço</th>
+                <th>Preço</th>
+                <th>Servidor</th>
+                <th>Contato</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for servico in servicos %}
+              <tr>
+                <td>{{ servico.servico_nome }}</td>
+                <td>{{ servico.preco }}</td>
+                <td>{{ servico.servidor_nome }}</td>
+                <td>{{ servico.email }}</td>
+                <td>
+                  <form method="GET" action="/contratar">
+                      <input type="hidden" name="id_servidor" value="{{ servico.servidor_id }}">
+                      <input type="hidden" name="id_servico" value="{{ servico.servico_id }}">
+                      <input type="hidden" name="id_cliente" value="{{ session['user_id'] }}">
+                      <button type="submit" class="button-contratar">Contratar</button>
+                  </form>
+              </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
     </div>
   </div>
-
-  <script>
-        function toggleDropdown(button) {
-            //var dropdown = document.getElementById("dropdownContent");
-            var dropdown = button.nextElementSibling;
-            if (dropdown.style.display === "none" || dropdown.style.display === "") {
-                dropdown.style.display = "block";
-            } else {
-                dropdown.style.display = "none";
-            }
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.style.display === "block") {
-                        openDropdown.style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
 {% endblock %}

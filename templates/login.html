@@ -6,17 +6,25 @@
       <div class="title-site"><h1>OMEGA</h1></div>
       <div class="container-login">
           <div><h2>Login</h2></div>
-          <div>
-              <span class="span-email"><h3>E-mail:</h3></span>
-              <input type="email" class="" id="email-input" name="email" placeholder="nome@gmail.com">
-              <span class="span-senha"><h3>Senha:</h3></span>
-              <input type="password" class="" id="password-input" name="password" placeholder="****">
-              <button class="button-login">Login</button>
-          </div>
-          <div class="divider">Ou cadastre-se: <a href="/cadastro" >Cadastro</a></div>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <form method="POST" action="/login">
+              <div>
+                  <span class="span-email"><h3>E-mail:</h3></span>
+                  <input type="email" class="" id="email-input" name="email" placeholder="nome@gmail.com" required>
+                  <span class="span-senha"><h3>Senha:</h3></span>
+                  <input type="password" class="" id="password-input" name="password" placeholder="****" required>
+                  <button type="submit" class="button-login">Login</button>
+              </div>
+          </form>
+          <div class="divider">Ou cadastre-se: <a href="/cadastro">Cadastro</a></div>
       </div>
   </div>
   
-
   <script src=""></script>
 {% endblock %}

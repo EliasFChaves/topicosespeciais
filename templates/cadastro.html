@@ -6,26 +6,39 @@
       <div class="title-site"><h1>OMEGA</h1></div>
       <div class="container-cadastro">
           <div><h2>Cadastro</h2></div>
-          <div>
-              <span class="span-email"><h3>E-mail:</h3></span>
-              <input type="email" class="" id="email-input" name="email" placeholder="nome@gmail.com">
-              <div class="decisao-cliente-servidor">
-                  <span class="span-decisao">Você é um:</span>
-                  <button class="button-decisao" id="cliente">Cliente</button>
-                  <button class="button-decisao" id="servidor">Servidor</button>
-              </div>
-              <span class="span-nome"><h3>Nome:</h3></span>
-              <input type="string" class="" id="nome-input" name="nome" placeholder="Nome Sobrenome">
-              <span class="span-cpf"><h3>Cpf</h3></span>
-              <input type="number" class="" id="cpf-input" name="cpf" placeholder="000.000.000-00">
-              <span class="span-senha"><h3>Senha:</h3></span>
-              <input type="password" class="" id="password-input" name="password" placeholder="****">
-              <button class="button-cadastro">Cadastre</button>
-          </div>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <form method="POST" action="/cadastro">
+            <div>
+                <span class="span-email"><h3>E-mail:</h3></span>
+                <input type="email" class="" id="email-input" name="email" placeholder="nome@gmail.com" required>
+                <div class="decisao-cliente-servidor">
+                    <span class="span-decisao">Você é um:</span>
+                    <button type="button" class="button-decisao" id="cliente" onclick="setRole('cliente')">Cliente</button>
+                    <button type="button" class="button-decisao" id="servidor" onclick="setRole('servidor')">Servidor</button>
+                </div>
+                <input type="hidden" name="role" id="role-input" value="cliente">
+                <span class="span-nome"><h3>Nome:</h3></span>
+                <input type="text" class="" id="nome-input" name="nome" placeholder="Nome Sobrenome" required>
+                <span class="span-cpf"><h3>CPF:</h3></span>
+                <input type="text" class="" id="cpf-input" name="cpf" placeholder="000.000.000-00" required>
+                <span class="span-senha"><h3>Senha:</h3></span>
+                <input type="password" class="" id="password-input" name="password" placeholder="****" required>
+                <button type="submit" class="button-cadastro">Cadastre-se</button>
+            </div>
+          </form>
           <div class="divider">Ou faça login: <a href="/login" >Login</a></div>
       </div>
   </div>
-  
 
-  <script src=""></script>
+  <script>
+      function setRole(role) {
+          document.getElementById('role-input').value = role;
+      }
+  </script>
 {% endblock %}

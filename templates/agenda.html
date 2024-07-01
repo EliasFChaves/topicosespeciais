@@ -2,46 +2,77 @@
 {% block title %}OMEGA - Agenda{% endblock %}
 
 {% block content %}
-  <div class="page-agenda">
+  <style>
+    .tabela-agendamentos {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-agendamentos th, .tabela-agendamentos td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.tabela-agendamentos th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.button-excluir {
+  padding: 5px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.button-excluir:hover {
+  background-color: #d32f2f;
+}
+  </style>
+   <div class="page-agenda">
     <div class="sidebar">{% include 'sidebar.html' %}</div>
     <div class="page-agendamentos">
         <div class="page-agenda-titulo">
           <p style="color: black">Seus agendamentos</p>
         </div>
         <div class="div-lista-agendamentos">
-          <div class="lista-agendamentos">
-          <!-- Fazer um for aqui com um if -->
-            <div class="card-agendamento">
-              <span class="servico-card">Eletricistinha</span>
-              <span class="nome-card">João Zé</span>
-              <div class="button-card">
-                <button class="button-excluir">Excuir</button>
-              </div>
-              <span class="data-card">31/02/2024</span>
-              <span class="celular-card">(99)99999-9999</span>
-            </div>
-            <div class="card-agendamento">
-              <span class="servico-card">Faxinas</span>
-              <span class="nome-card">Mariazinha</span>
-              <div class="button-card">
-                <button class="button-excluir">Excuir</button>
-              </div>
-              <span class="data-card">30/06/2024</span>
-              <span class="celular-card">99999-9999</span>
-            </div>
-            <div class="card-agendamento">
-              <span class="servico-card">Teste</span>
-              <span class="nome-card">Teste</span>
-              <div class="button-card">
-                <button class="button-excluir">Excuir</button>
-              </div>
-              <span class="data-card">31/02/2024</span>
-              <span class="celular-card">000</span>
-            </div>
-          </div>
+          <table class="tabela-agendamentos">
+            <thead>
+              <tr>
+                <th>Serviço</th>
+                <th>Nome</th>
+                <th>Data</th>
+                <th>Contato</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for agendamento in agendamentos %}
+              <tr>
+                <td>{{ agendamento[1] }}</td>
+                {% if user_type == 'cliente' %}
+                <td>{{ agendamento[2] }}</td>
+                <td>{{ agendamento[0] }}</td>
+                <td>{{ agendamento[3] }}</td>
+                {% elif user_type == 'servidor' %}
+                <td>{{ agendamento[2] }}</td>
+                <td>{{ agendamento[0] }}</td>
+                <td>{{ agendamento[3] }}</td>
+                {% endif %}
+                <td>
+                  <form method="POST" action="/excluir_agendamento">
+                    <input type="hidden" name="servico" value="{{ agendamento }}">
+                    <input type="hidden" name="nome" value="{{ agendamento[2] }}">
+                    <input type="hidden" name="data_hora" value="{{ agendamento[0] }}">
+                    <button type="submit" class="button-excluir">Excluir</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
     </div>
   </div>
-
-  <script src=""></script>
 {% endblock %}
